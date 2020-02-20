@@ -31,9 +31,6 @@ public class EmployeeController {
 
 	@Autowired
 	private EmployeeService employeeService;
-	
-	@Autowired
-	private HttpSession session;
 
 	/**
 	 * 使用するフォームオブジェクトをリクエストスコープに格納する.
@@ -75,8 +72,7 @@ public class EmployeeController {
 	public String showDetail(String id, Model model) {
 		Employee employee = employeeService.showDetail(Integer.parseInt(id));
 		model.addAttribute("employee", employee);
-		
-		
+
 		return "employee/detail";
 	}
 
@@ -84,12 +80,22 @@ public class EmployeeController {
 	// ユースケース：従業員の名前で曖昧検索された結果を表示する
 	/////////////////////////////////////////////////////
 	@RequestMapping("/showListByName")
-	public String showListByName(FindByNameForm form, Model model) {
-		Employee employee = new Employee();
-		BeanUtils.copyProperties(form, employee);
+	public String showListByName(String name, Model model) {
 
-		List<Employee> employeeList = employeeService.showListByName(employee.getName());
-		model.addAttribute("employeeList", employeeList);
+		List<Employee> employeeList = employeeService.showListByName(name);
+		System.out.println(employeeList);
+
+		if (employeeList.size() == 0) {
+			model.addAttribute("employeeList", employeeService.showList());
+
+			String message = "※検索した名前に一致する従業員はいませんでした。";
+			model.addAttribute("message", message);
+
+		} else {
+
+			model.addAttribute("employeeList", employeeList);
+
+		}
 		return "employee/list";
 	}
 
