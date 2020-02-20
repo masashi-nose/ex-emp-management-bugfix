@@ -1,5 +1,7 @@
 package jp.co.sample.emp_management.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
@@ -13,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.co.sample.emp_management.domain.Administrator;
+import jp.co.sample.emp_management.domain.Employee;
 import jp.co.sample.emp_management.form.InsertAdministratorForm;
 import jp.co.sample.emp_management.form.LoginForm;
 import jp.co.sample.emp_management.service.AdministratorService;
+import jp.co.sample.emp_management.service.EmployeeService;
 
 /**
  * 管理者情報を操作するコントローラー.
@@ -29,6 +33,9 @@ public class AdministratorController {
 
 	@Autowired
 	private AdministratorService administratorService;
+	
+//	@Autowired
+//	private EmployeeService employeeService;
 	
 	@Autowired
 	private HttpSession session;
@@ -122,6 +129,9 @@ public class AdministratorController {
 			model.addAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 			return toLogin();
 		}
+		
+		session.setAttribute("name", administrator.getName());
+		System.out.println(administrator.getName());
 		return "forward:/employee/showList";
 	}
 	

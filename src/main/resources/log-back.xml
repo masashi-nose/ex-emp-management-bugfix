@@ -17,8 +17,8 @@
 		<smtpHost>smtp.gmail.com</smtpHost>
 		<smtpPort>465</smtpPort>
 		<SSL>true</SSL>
-		<username></username>	<!-- ←googleアカウントのメールアドレス -->
-		<password></password>			<!-- ←アプリパスワード -->
+		<username>sapec.tsukuba.ac.jp@gmail.com</username>	<!-- ←googleアカウントのメールアドレス -->
+		<password>dhhnkrhwpejcuxle</password>			<!-- ←アプリパスワード -->
 
 		<!-- メールの送り先、送り主、件名 -->
 		<to>ma.nose9413@gmail.com</to>				<!-- ←カンマ区切りにすると送信先を複数にできる -->
@@ -35,7 +35,7 @@
 	</appender>
 
 	<root>
-		<level value="INFO" /><!-- DEBUGやにするとDEBUGランク以上のログが送られるため、起動が遅くなる。 -->
+		<level value="ERROR" /><!-- DEBUGやにするとDEBUGランク以上のログが送られるため、起動が遅くなる。 -->
 		<!-- ↑どうしても解決できない問題が発生した場合のみDEBUGランク以上情報を送信する -->
 		<appender-ref ref="EMAIL" /><!-- 上でappenderを登録したら、この一行を書かないと動作しない -->
 	</root>
