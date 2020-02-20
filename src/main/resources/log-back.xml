@@ -17,8 +17,8 @@
 		<smtpHost>smtp.gmail.com</smtpHost>
 		<smtpPort>465</smtpPort>
 		<SSL>true</SSL>
-		<username>sapec.tsukuba.ac.jp@gmail.com</username>	<!-- ←googleアカウントのメールアドレス -->
-		<password>dhhnkrhwpejcuxle</password>			<!-- ←アプリパスワード -->
+		<username></username>	<!-- ←googleアカウントのメールアドレス -->
+		<password></password>			<!-- ←アプリパスワード -->
 
 		<!-- メールの送り先、送り主、件名 -->
 		<to>ma.nose9413@gmail.com</to>				<!-- ←カンマ区切りにすると送信先を複数にできる -->
