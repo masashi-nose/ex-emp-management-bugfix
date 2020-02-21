@@ -1,7 +1,5 @@
 package jp.co.sample.emp_management.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
@@ -15,11 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.co.sample.emp_management.domain.Administrator;
-import jp.co.sample.emp_management.domain.Employee;
 import jp.co.sample.emp_management.form.InsertAdministratorForm;
 import jp.co.sample.emp_management.form.LoginForm;
 import jp.co.sample.emp_management.service.AdministratorService;
-import jp.co.sample.emp_management.service.EmployeeService;
 
 /**
  * 管理者情報を操作するコントローラー.
@@ -33,10 +29,10 @@ public class AdministratorController {
 
 	@Autowired
 	private AdministratorService administratorService;
-	
+
 //	@Autowired
 //	private EmployeeService employeeService;
-	
+
 	@Autowired
 	private HttpSession session;
 
@@ -49,8 +45,8 @@ public class AdministratorController {
 	public InsertAdministratorForm setUpInsertAdministratorForm() {
 		return new InsertAdministratorForm();
 	}
-	
-	//  (SpringSecurityに任せるためコメントアウトしました)
+
+	// (SpringSecurityに任せるためコメントアウトしました)
 	@ModelAttribute
 	public LoginForm setUpLoginForm() {
 		return new LoginForm();
@@ -72,33 +68,38 @@ public class AdministratorController {
 	/**
 	 * 管理者情報を登録します.
 	 * 
-	 * @param form
-	 *            管理者情報用フォーム
+	 * @param form 管理者情報用フォーム
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert(@Validated InsertAdministratorForm form, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
-		if(result.hasErrors()) {
-			return "/toInsert";
-		
+	public String insert(@Validated InsertAdministratorForm form, BindingResult result,
+			RedirectAttributes redirectAttributes, Model model) {
+
+		Administrator administrator = administratorService.findByEmail(form.getMailAddress());
+
+		if (!(administrator == null)) {
+			result.rejectValue("mailAddress", "", "入力されたメールアドレスはすでに登録されています。");
+
 		}
 		
-		Administrator administrator = new Administrator();
-		// フォームからドメインにプロパティ値をコピー
-		BeanUtils.copyProperties(form, administrator);	
-		
-		administratorService.insert(administrator);
-		
-	
-		
-		
-		return "redirect:/";
-		
-		
-		
-	}
-	
+		if(!(form.getPassword().equals(form.getRePassword()))) {
+			result.rejectValue("rePassword", "", "入力されたパスワードが違います。");
+		}
 
+		if (result.hasErrors()) {
+			return "administrator/insert";
+
+		}
+
+		administrator = new Administrator();
+//		 フォームからドメインにプロパティ値をコピー
+		BeanUtils.copyProperties(form, administrator);
+
+		administratorService.insert(administrator);
+
+		return "redirect:/";
+
+	}
 
 	/////////////////////////////////////////////////////
 	// ユースケース：ログインをする
@@ -116,10 +117,8 @@ public class AdministratorController {
 	/**
 	 * ログインします.
 	 * 
-	 * @param form
-	 *            管理者情報用フォーム
-	 * @param result
-	 *            エラー情報格納用オブッジェクト
+	 * @param form   管理者情報用フォーム
+	 * @param result エラー情報格納用オブッジェクト
 	 * @return ログイン後の従業員一覧画面
 	 */
 	@RequestMapping("/login")
@@ -129,12 +128,12 @@ public class AdministratorController {
 			model.addAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 			return toLogin();
 		}
-		
+
 		session.setAttribute("name", administrator.getName());
 		System.out.println(administrator.getName());
 		return "forward:/employee/showList";
 	}
-	
+
 	/////////////////////////////////////////////////////
 	// ユースケース：ログアウトをする
 	/////////////////////////////////////////////////////
@@ -148,5 +147,5 @@ public class AdministratorController {
 		session.invalidate();
 		return "redirect:/";
 	}
-	
+
 }

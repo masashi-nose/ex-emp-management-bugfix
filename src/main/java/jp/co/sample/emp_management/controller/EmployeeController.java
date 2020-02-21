@@ -74,6 +74,13 @@ public class EmployeeController {
 	/////////////////////////////////////////////////////
 	// ユースケース：従業員の名前で曖昧検索された結果を表示する
 	/////////////////////////////////////////////////////
+	/**
+	 * 従業員の名前で曖昧検索された結果画面を表示.
+	 * 
+	 * @param name リクエストパラメータ
+	 * @param model　リクエストスコープ作成
+	 * @return　曖昧検索結果画面
+	 */
 	@RequestMapping("/showListByName")
 	public String showListByName(String name, Model model) {
 
@@ -81,16 +88,15 @@ public class EmployeeController {
 		System.out.println(employeeList);
 
 		if (employeeList.size() == 0) {
-			model.addAttribute("employeeList", employeeService.showList());
+			//model.addAttribute("employeeList", employeeService.showList());
 
-			String message = "※検索した名前に一致する従業員はいませんでした。";
+			String message = "検索した名前に一致する従業員はいませんでした。";
 			model.addAttribute("message", message);
+			return showList(model);
 
-		} else {
-
-			model.addAttribute("employeeList", employeeList);
-
-		}
+		} 
+		
+		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
 	}
 

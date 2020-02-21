@@ -79,6 +79,23 @@
 									</div>
 								</div>
 							</div>
+							<!-- パスワード再入力 -->
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12">
+									<label for="passwaord">
+											パスワード再入力:
+										</label>
+										<label th:if="${#fields.hasErrors('rePassword')}" th:errors="*{rePassword}" class="error-messages">
+											パスワードを再入力してください
+										</label>
+										<input type="password" name="re-password" id="re-password" class="form-control" placeholder="password"
+											 th:field="*{rePassword}" th:errorclass="error-input" value="xxxxxxxx">
+									</div>
+								</div>
+							</div>
+							
+							
 							<!-- 登録ボタン -->
 							<div class="form-group">
 								<div class="row">
